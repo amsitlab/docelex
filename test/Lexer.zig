@@ -9,7 +9,7 @@ test "line comment" {
         .with_doc = false,
         .buf = "//this is line comment",
     };
-
+    const token = lexer.next();
     try testing.expect(token.next() == Tag.eof);
     try testing.expectEqual(token.loc.beg, lexer.buf.len);
     try testing.expectEqual(token.loc.end, lexer.buf.len);
