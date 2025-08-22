@@ -2,7 +2,7 @@
 
 const Lexer = @import("../src/Lexer.zig");
 const testing = @import("std").testing;
-
+const Tag = Lexer.Token.Tag;
 
 test "line comment" {
     const lexer: Lexer = .{
