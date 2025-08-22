@@ -1,0 +1,40 @@
+
+name: Zig Test on Experimental Branch
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test:
+    name: Run Zig Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Zig version
+        id: zig-version
+        run: echo "version=0.14.1" >> $GITHUB_OUTPUT
+
+      - name: Cache Zig
+        id: cache-zig
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/zig
+            ~/.zig
+          key: zig-${{ steps.zig-version.outputs.version }}
+
+      - name: Install Zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: ${{ steps.zig-version.outputs.version }}
+
+      - name: Run Zig tests
+        run: zig build test
+
+      - name: Check outputs
+        run: ls -lah ./*/*
