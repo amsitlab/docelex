@@ -1,7 +1,7 @@
 
 
 const Lexer = @import("../src/Lexer.zig");
-const testig = @import("std").testing;
+const testing = @import("std").testing;
 
 
 test "line comment" {
