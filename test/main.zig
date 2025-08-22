@@ -1,3 +1,3 @@
 
 
-const _ = @import("test/Lexer.zig");
+const _ = @import("./Lexer.zig");
