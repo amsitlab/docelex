@@ -236,6 +236,8 @@ pub fn next(it: *@This()) Token {
                 '/' => {
                     it.idx += 1;
                     if (doc_len == 0 or it.with_doc == false) {
+                        token.loc.beg = it.idx;
+                        token.loc.end = it.idx;
                         continue :state .start;
                     }
                 },

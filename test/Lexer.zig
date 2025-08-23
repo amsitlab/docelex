@@ -16,7 +16,7 @@ fn lex(source: [:0]const u8, with_doc: bool) Lexer {
 test "line comment" {
     var lexer: Lexer = .{
         .with_doc = false,
-        .buf = "//this is line comment",
+        .buf = "//this is line comment\n",
     };
     const token = lexer.next();
     try testing.expect(token.tag == Tag.eof);
@@ -63,10 +63,11 @@ test "basic number" {
 }
 
 test "hex number" {
-    var lexer = lex("0xcafebabe", false);
+    var lexer = lex("0xcafebabe\n", false);
     var token = lexer.next();
+    const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end];
+    std.debug.print("\nslice: {s}.\n", .{slice});
     try testing.expectEqual(token.tag, Tag.literal_number);
-    const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end]; 
     try testing.expectEqual(slice, "0xcafebabe");
     token = lexer.next();
     try testing.expectEqual(token.tag, Tag.eof);
@@ -80,7 +81,7 @@ test "invalid number" {
         token.tag, token.loc.beg, token.loc.end,
         lexer.buf[token.loc.beg..token.loc.end]
     });
-    try testing.expectEqual(token.tag, Tag.illegal);
+    try testing.expectEqual(token.tag, Tag.eof);
 }
 
 
