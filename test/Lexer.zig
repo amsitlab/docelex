@@ -14,7 +14,7 @@ fn lex(source: [:0]const u8, with_doc: bool) Lexer {
 
 
 test "line comment" {
-    const lexer: Lexer = .{
+    var lexer: Lexer = .{
         .with_doc = false,
         .buf = "//this is line comment",
     };
@@ -25,7 +25,7 @@ test "line comment" {
 }
 
 test "line comment with close" {
-    const lexer: Lexer = .{
+    var lexer: Lexer = .{
         .with_doc = false,
         .buf = "//this is line comment*/",
     };
@@ -36,7 +36,7 @@ test "line comment with close" {
 }
 
 test "line comment with close then illegal" {
-    const lexer: Lexer = .{
+    var lexer: Lexer = .{
         .with_doc = false,
         .buf = "//this is line comment*/ illegal",
     };
@@ -50,7 +50,7 @@ test "line comment with close then illegal" {
 }
 
 test "basic number" {
-    const lexer: Lexer = .{
+    var lexer: Lexer = .{
         .whit_doc = false,
         .buf = "5"
     };
@@ -63,7 +63,7 @@ test "basic number" {
 }
 
 test "hex number" {
-    const lexer = lex("0xcafebabe", false);
+    var lexer = lex("0xcafebabe", false);
     var token = lexer.next();
     try testing.expectEqual(token.tag, Tag.literal_number);
     const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end]; 
@@ -73,7 +73,7 @@ test "hex number" {
 }
 
 test "invalid number" {
-    const lexer = lex("1e");
+    var lexer = lex("1e");
     try testing.expectEqual(lexer.next().tag, Tag.Illegal);
     const token = lexer.next();
     std.debug.print("\nToken{{ .tag = {?}, .loc = {{ .beg = {d}, .end = {d} }} lex: {s}\n", .{
