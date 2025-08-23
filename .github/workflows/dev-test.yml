@@ -35,7 +35,7 @@ jobs:
           version: ${{ steps.zig-version.outputs.version }}
 
       - name: Run Zig tests
-        run: zig test test/main.zig
+        run: zig build test --summary all
 
       - name: Check outputs
         run: ls -lah ./*/*
