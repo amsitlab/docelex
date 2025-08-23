@@ -74,7 +74,12 @@ test "hex number" {
 test "invalid number" {
     const lexer = lex("1e");
     try testing.expectEqual(lexer.next().tag, Tag.Illegal);
-    try testing.expectEqual(lexer.next().tag, Tag.illegal);
+    const token = lexer.next();
+    std.debug.print("\nToken{{ .tag = {?}, .loc = {{ .beg = {d}, .end = {d} }} lex: {s}\n", .{
+        token.tag, token.loc.beg, token.loc.end,
+        lexer.buf[token.loc.beg..token.loc.end]
+    })
+    try testing.expectEqual(token.tag, Tag.illegal);
 }
 
 
