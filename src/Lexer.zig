@@ -269,35 +269,28 @@ pub fn next(it: *@This()) Token {
             // TODO: . for floating-point
             '.',
             //TODO: B b for binary 
-            'B', 'b',
+            'b', 'B',
             //TODO: E e for exponent
             'e', 'E',
             //TODO: O o for octal
             'o', 'O',
             //TODO: P p for hexa-exponent
             'p', 'P',
+            // TODO: invalid
             'a', 'A',
             'c', 'C',
             'd', 'D',
             'f'...'n', 'F'...'N',
             'q'...'w', 'Q'...'W',
             'y', 'Y',
-            'z', 'Z' => if(it.idx == BUFLEN) {
+            'z', 'Z' => {
                 token.loc.end = it.idx;
                 token.tag = .literal_number;
                 return token;
-            } else {
-                continue :state .invalid;
             },
 
             // anything
-            else =>  if(it.idx == BUFLEN) {
-                token.loc.end = it.idx;
-                token.tag = .illegal;
-                return token;
-            } else {
-                continue :state .invalid;
-            },
+            else =>  {},
             
         //}}}1
         },
