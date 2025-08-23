@@ -51,7 +51,7 @@ test "line comment with close then illegal" {
 
 test "basic number" {
     var lexer: Lexer = .{
-        .whit_doc = false,
+        .with_doc = false,
         .buf = "5"
     };
 
@@ -73,7 +73,7 @@ test "hex number" {
 }
 
 test "invalid number" {
-    var lexer = lex("1e");
+    var lexer = lex("1e", false);
     try testing.expectEqual(lexer.next().tag, Tag.Illegal);
     const token = lexer.next();
     std.debug.print("\nToken{{ .tag = {?}, .loc = {{ .beg = {d}, .end = {d} }} lex: {s}\n", .{

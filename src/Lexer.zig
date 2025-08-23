@@ -61,6 +61,7 @@ const State = enum {
     doc,
     doc_start,
     int,
+    number_hex,
 };
 
 
@@ -296,6 +297,3 @@ pub fn next(it: *@This()) Token {
     return token;
 }
 
-test "must be failure" {
-    @import("std").testing.expectEqual(true, false);
-}
