@@ -15,5 +15,7 @@ pub fn build(b: *std.Build) void {
     b.step("test", "Run all unit test")
         .dependOn(&runTest.step);
 
+    // ref: https://github.com/ziglang/zig/issues/16673
+    b.installArtifact(tests);
 
 }
