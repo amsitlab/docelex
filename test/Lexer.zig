@@ -56,17 +56,21 @@ test "basic number" {
     };
 
     var token = lexer.next();
-    _ = testing.expectEqual(token.tag, Tag.literal_number) catch |e| {
-        std.debug.print("Tag.literal_number == {?}: {}", .{
-            token.tag, e
+    std.debug.print("-----<basic number>-----");
+    _ = testing.expectEqual(Tag.literal_number, token.tag) catch |e| {
+        std.debug.print("{}Tag.literal_number == {?}\n", .{
+            e, token.tag
         });
+        return e;
     };
     token = lexer.next();
-    _ = testing.expectEqual(token.tag, Tag.eof) catch |e| {
-        std.debug.print("Token.eof == {?}: {}", .{
-            token.tag, e
+    _ = testing.expectEqual(Tag.eof, token.tag) catch |e| {
+        std.debug.print("{}: Tag.eof == {?}\n", .{
+            e, token.tag
         });
+        return e;
     };
+    std.debug.print("-----</basic number>-----");
 
 }
 
@@ -74,22 +78,29 @@ test "hex number" {
     var lexer = lex("0xcafebabe\n", false);
     var token = lexer.next();
     const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end];
+    std.debug.print("-----<hex number>-----");
     std.debug.print("\nslice: {s}.\n", .{slice});
-    _ = testing.expectEqual(token.tag, Tag.literal_number) catch |e| {
-        std.debug.print("{?} == Tag.literal_number : {}\n", .{token.tag, e});
-    };
-    _ = testing.expectEqual(slice, "0xcafebabe") catch |e| {
-        std.debug.print("{s} == 0xcafebabe: {}\nslice: {s}\n", .{
-            slice, e, slice
+    _ = testing.expectEqual(Tag.literal_number, token.tag) catch |e| {
+        std.debug.print("{}: {?} == Tag.literal_number\n", .{
+            etoken.tag
         });
+        return e;
+    };
+    _ = testing.expectEqual("0xcafebabe", slice) catch |e| {
+        std.debug.print("{}: 0xcafebabe == {s}\nslice: {s}\n", .{
+            e, slice, slice
+        });
+        return e;
     };
    
     token = lexer.next();
-    _ = testing.expectEqual(token.tag, Tag.eof) catch |e| {
-        std.debug.print("Tag.eof == {?} : {}\n", .{
-            token.tag, e
+    _ = testing.expectEqual(Tag.eof, token.tag) catch |e| {
+        std.debug.print("{}: Tag.eof == {?}\n", .{
+            e, token.tag
         });
+        return e;
     };
+    std.debug.print("-----</hex number>-----");
 }
 
 test "invalid number" {
