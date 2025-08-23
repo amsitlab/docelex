@@ -74,7 +74,7 @@ test "hex number" {
 test "invalid number" {
     const lexer = lex("1e");
     try testing.expectEqual(lexer.next().tag, Tag.Illegal);
-    try testing.expectEqual(lexer.next().tag, Tag.eof);
+    try testing.expectEqual(lexer.next().tag, Tag.illegal);
 }
 
 
