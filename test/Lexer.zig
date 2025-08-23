@@ -5,9 +5,9 @@ const testing = @import("std").testing;
 const Tag = Lexer.Token.Tag;
 
 
-fn lex(source: [:0]const u8, with_doc: bool = false) Lexer {
+fn lex(source: [:0]const u8, with_doc: bool) Lexer {
     return .{
-        .buf = source, .with_doc = false
+        .buf = source, .with_doc = with_doc,
     };
 }
 
