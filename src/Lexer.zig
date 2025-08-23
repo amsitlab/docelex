@@ -258,7 +258,7 @@ pub fn next(it: *@This()) Token {
                 it.idx += 1;
                 continue :state .number_hex;
             } else {
-                if (self.idx != BUFLEN) continue :state .invalid;
+                if (it.idx != BUFLEN) continue :state .invalid;
                 token.tag = .illegal;
                 token.loc.end = it.idx;
                 return token;
@@ -277,7 +277,7 @@ pub fn next(it: *@This()) Token {
         //}}}1
         },
         .number_hex => switch(it.buf[it.idx]){
-            0 => if(self.idx == BUFLEN) {
+            0 => if(it.idx == BUFLEN) {
                 token.tag = .illegal;
                 token.loc.end = it.idx;
                 return token;
@@ -285,7 +285,7 @@ pub fn next(it: *@This()) Token {
                 continue :state .invalid;
             },
             'a'...'f', 'A'...'F', '0'...'9', '_' => {
-                self.idx += 1;
+                it.idx += 1;
                 continue :state .number_hex;
             },
             else => {},
