@@ -1,7 +1,8 @@
 
 
 const Lexer = @import("../src/Lexer.zig");
-const testing = @import("std").testing;
+const std = @import("std");
+const testing = std.testing;
 const Tag = Lexer.Token.Tag;
 
 
