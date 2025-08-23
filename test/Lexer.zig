@@ -89,7 +89,7 @@ test "hex number" {
         });
         return e;
     };
-    _ = testing.expectEqual("0xcafebabe", slice) catch |e| {
+    _ = testing.expect(std.mem.eql(u8, "0xcafebabe", slice)) catch |e| {
         std.debug.print("{}: 0xcafebabe == {s}\nslice: {s}\n", .{
             e, slice, slice
         });
