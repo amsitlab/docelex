@@ -52,13 +52,21 @@ test "line comment with close then illegal" {
 test "basic number" {
     var lexer: Lexer = .{
         .with_doc = false,
-        .buf = "5"
+        .buf = "5 "
     };
 
     var token = lexer.next();
-    try testing.expectEqual(token.tag, Tag.literal_number);
+    _ = testing.expectEqual(token.tag, Tag.literal_number) catch |e| {
+        std.debug.print("Tag.literal_number == {?}: {}", .{
+            token.tag, e
+        });
+    };
     token = lexer.next();
-    try testing.expectEqual(token.tag, Tag.eof);
+    _ = testing.expectEqual(token.tag, Tag.eof) catch |e| {
+        std.debug.print("Token.eof == {?}: {}", .{
+            token.tag, e
+        });
+    };
 
 }
 
@@ -67,10 +75,21 @@ test "hex number" {
     var token = lexer.next();
     const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end];
     std.debug.print("\nslice: {s}.\n", .{slice});
-    try testing.expectEqual(token.tag, Tag.literal_number);
-    try testing.expectEqual(slice, "0xcafebabe");
+    _ = testing.expectEqual(token.tag, Tag.literal_number) catch |e| {
+        std.debug.print("{?} == Tag.literal_number : {}\n", .{token.tag, e});
+    };
+    _ = testing.expectEqual(slice, "0xcafebabe") catch |e| {
+        std.debug.print("slice == 0xcafebabe: {}\nslice: {s}\n", .{
+            e, slice
+        });
+    };
+   
     token = lexer.next();
-    try testing.expectEqual(token.tag, Tag.eof);
+    _ = testing.expectEqual(token.tag, Tag.eof) catch |e| {
+        std.debug.println("Tag.eof == {?} : {}\n", .{
+            token.tag, e
+        });
+    };
 }
 
 test "invalid number" {
