@@ -4,6 +4,14 @@ const Lexer = @import("../src/Lexer.zig");
 const testing = @import("std").testing;
 const Tag = Lexer.Token.Tag;
 
+
+fn lex(source: [:0]const u8, with_doc: bool = false) Lexer {
+    return .{
+        .buf = source, .with_doc = false
+    };
+}
+
+
 test "line comment" {
     const lexer: Lexer = .{
         .with_doc = false,
@@ -52,3 +60,21 @@ test "basic number" {
     try testing.expectEqual(token.tag, Tag.eof);
 
 }
+
+test "hex number" {
+    const lexer = lex("0xcafebabe", false);
+    var token = lexer.next();
+    try testing.expectEqual(token.tag, Tag.literal_number);
+    const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end]; 
+    try testing.expectEqual(slice, "0xcafebabe");
+    token = lexer.next();
+    try testing.expectEqual(token.tag, Tag.eof);
+}
+
+test "invalid number" {
+    const lexer = lex("1e");
+    try testing.expectEqual(lexer.next().tag, Tag.Illegal);
+    try testing.expectEqual(lexer.next().tag, Tag.eof);
+}
+
+
