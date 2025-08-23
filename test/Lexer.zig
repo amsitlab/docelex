@@ -78,7 +78,7 @@ test "invalid number" {
     std.debug.print("\nToken{{ .tag = {?}, .loc = {{ .beg = {d}, .end = {d} }} lex: {s}\n", .{
         token.tag, token.loc.beg, token.loc.end,
         lexer.buf[token.loc.beg..token.loc.end]
-    })
+    });
     try testing.expectEqual(token.tag, Tag.illegal);
 }
 
