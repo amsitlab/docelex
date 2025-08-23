@@ -284,7 +284,7 @@ pub fn next(it: *@This()) Token {
             'y', 'Y',
             'z', 'Z' => if(it.idx == BUFLEN) {
                 token.loc.end = it.idx;
-                token.tag = .illegal;
+                token.tag = .literal_number;
                 return token;
             } else {
                 continue :state .invalid;
