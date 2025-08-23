@@ -86,7 +86,7 @@ test "hex number" {
    
     token = lexer.next();
     _ = testing.expectEqual(token.tag, Tag.eof) catch |e| {
-        std.debug.println("Tag.eof == {?} : {}\n", .{
+        std.debug.print("Tag.eof == {?} : {}\n", .{
             token.tag, e
         });
     };
