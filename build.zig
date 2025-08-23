@@ -11,6 +11,10 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    tests.addModule("docelex", .{
+        .root_source_file = b.path("src/docelex.zig")
+    });
+
     const runTest = b.addRunArtifact(tests);
     b.step("test", "Run all unit test")
         .dependOn(&runTest.step);
