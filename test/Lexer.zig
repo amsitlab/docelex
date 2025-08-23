@@ -64,7 +64,7 @@ test "basic number" {
         std.debug.print("beg: {d}, end: {d}, slice: {s}\n", .{
             token.loc.beg, token.loc.end,
             lexer.buf[token.loc.beg..token.loc.end]
-        })
+        });
         return e;
     };
     token = lexer.next();
