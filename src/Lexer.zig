@@ -265,9 +265,13 @@ pub fn next(it: *@This()) Token {
                 return token;
             },
             //TODO: B b for binary 
+            'B', 'b' => continue :state .invalid,
             //TODO: E e for exponent
+            'e', 'E' => continue :state .invalid,
             //TODO: O o for octal
+            'o', 'O' => continue :state .invalid,
             //TODO: P p for hexa-exponent
+            'p', 'P' => continue :state .invalid,
             'a', 'A',
             'c', 'C',
             'd', 'D',
@@ -275,6 +279,7 @@ pub fn next(it: *@This()) Token {
             'q'...'w', 'Q'...'W',
             'y', 'Y',
             'z', 'Z' => continue :state .invalid,
+            
         //}}}1
         },
         .number_hex => switch(it.buf[it.idx]){
