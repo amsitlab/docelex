@@ -5,15 +5,16 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    const docelex = b.createModule(.{
+        .root_source_file = b.path("src/docelex.zig")
+    });
     const tests =  b.addTest(.{
         .root_source_file = b.path("test/main.zig"),
         .target = target,
         .optimize = optimize,
     });
 
-    tests.addModule("docelex", .{
-        .root_source_file = b.path("src/docelex.zig")
-    });
+    tests.root_module.addImport("docelex", docelex);
 
     const runTest = b.addRunArtifact(tests);
     b.step("test", "Run all unit test")
