@@ -56,11 +56,15 @@ test "basic number" {
     };
 
     var token = lexer.next();
-    std.debug.print("-----<basic number>-----\n", .{});
+    std.debug.print("\n-----<basic number>-----\n", .{});
     _ = testing.expectEqual(Tag.literal_number, token.tag) catch |e| {
-        std.debug.print("{}Tag.literal_number == {?}\n", .{
+        std.debug.print("{}: Tag.literal_number == {?}\n", .{
             e, token.tag
         });
+        std.debug.print("beg: {d}, end: {d}, slice: {s}\n", .{
+            token.loc.beg, token.loc.end,
+            lexer.buf[token.loc.beg..token.loc.end]
+        })
         return e;
     };
     token = lexer.next();
@@ -70,7 +74,7 @@ test "basic number" {
         });
         return e;
     };
-    std.debug.print("-----</basic number>-----\n", .{});
+    std.debug.print("\n-----</basic number>-----\n", .{});
 
 }
 
@@ -78,10 +82,9 @@ test "hex number" {
     var lexer = lex("0xcafebabe\n", false);
     var token = lexer.next();
     const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end];
-    std.debug.print("-----<hex number>-----\n", .{});
-    std.debug.print("\nslice: {s}.\n", .{slice});
+    std.debug.print("\n-----<hex number>-----\n", .{});
     _ = testing.expectEqual(Tag.literal_number, token.tag) catch |e| {
-        std.debug.print("{}: {?} == Tag.literal_number\n", .{
+        std.debug.print("{}: Tag.literal_number == {?}\n", .{
             e, token.tag
         });
         return e;
@@ -100,7 +103,7 @@ test "hex number" {
         });
         return e;
     };
-    std.debug.print("-----</hex number>-----\n", .{});
+    std.debug.print("\n-----</hex number>-----\n", .{});
 }
 
 test "invalid number" {
