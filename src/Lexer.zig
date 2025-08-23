@@ -29,6 +29,7 @@ pub const Token = struct {
         key_and,
         key_break,
 
+        literal_number,
 
         ampersand,
         astrisk,
@@ -59,6 +60,7 @@ const State = enum {
     doc_or_comment_stop,
     doc,
     doc_start,
+    int,
 };
 
 
@@ -69,6 +71,7 @@ pub fn next(it: *@This()) Token {
         }
     };
     var doc_len: usize = 0;
+    var is_zero_based = false;
     const BUFLEN = it.buf.len;
     state: switch(State.start) {
         .start => switch(it.buf[it.idx]){
@@ -96,6 +99,12 @@ pub fn next(it: *@This()) Token {
                 token.loc.end = it.idx;
                 return token;
             },
+            '0'...'9' => {
+                token.tag = .literal_number;
+                is_zero_based = it.buf[it.idx] == '0';
+                it.idx += 1;
+                continue :state .int;
+            }
         //}}}1
         },
         .slash => {
@@ -237,6 +246,50 @@ pub fn next(it: *@This()) Token {
             }
         //}}}1
         },
+        .int => switch(it.buf[it.idx]){
+        //{{{1
+            // TODO: floating-point, integer-exponent
+            '_',
+            '0'...'9' => {
+                it.idx += 1;
+                continue :state .int;
+            },
+            'x', 'X' => if (is_zero_based) {
+                it.idx += 1;
+                continue :state .number_hex;
+            } else {
+                if (self.idx != BUFLEN) continue :state .invalid;
+                token.tag = .illegal;
+                token.loc.end = it.idx;
+                return token;
+            },
+            //TODO: B b for binary 
+            //TODO: E e for exponent
+            //TODO: O o for octal
+            //TODO: P p for hexa-exponent
+            'a', 'A'
+            'c', 'C',
+            'd', 'D',
+            'f'...'n', 'F'...'N',
+            'q'...'w', 'Q'...'W',
+            'y', 'Y',
+            'z', 'Z' => continue :state .invalid,
+        //}}}1
+        },
+        .number_hex => switch(it.buf[it.idx]){
+            0 => if(self.idx == BUFLEN) {
+                token.tag = .illegal;
+                token.loc.end = it.idx;
+                return token;
+            } else {
+                continue :state .invalid;
+            },
+            'a'...'f', 'A'...'F', '0'...'9', '_' => {
+                self.idx += 1;
+                continue :state .number_hex;
+            },
+            else => {},
+        }
     }
     
     token.loc.end = it.idx;

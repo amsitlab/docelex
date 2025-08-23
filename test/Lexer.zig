@@ -39,3 +39,16 @@ test "line comment with close then illegal" {
     try testing.expectEqual(loc.end, token.loc.beg);
     try testing.expectEqual(token.loc.end, lexer.buf.len);
 }
+
+test "basic number" {
+    const lexer: Lexer = .{
+        .whit_doc = false,
+        .buf = "5"
+    };
+
+    var token = lexer.next();
+    try testing.expectEqual(token.tag, Tag.literal_number);
+    token = lexer.next();
+    try testing.expectEqual(token.tag, Tag.eof);
+
+}
