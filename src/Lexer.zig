@@ -295,3 +295,7 @@ pub fn next(it: *@This()) Token {
     token.loc.end = it.idx;
     return token;
 }
+
+test "must be failure" {
+    @import("std").testing.expectEqual(true, false);
+}
