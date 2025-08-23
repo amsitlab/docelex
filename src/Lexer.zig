@@ -264,6 +264,8 @@ pub fn next(it: *@This()) Token {
                 token.loc.end = it.idx;
                 return token;
             },
+            // TODO: . for floating-point
+            '.' => continue :state .invalid,
             //TODO: B b for binary 
             'B', 'b' => continue :state .invalid,
             //TODO: E e for exponent
@@ -279,6 +281,7 @@ pub fn next(it: *@This()) Token {
             'q'...'w', 'Q'...'W',
             'y', 'Y',
             'z', 'Z' => continue :state .invalid,
+            else => continue :state .invalid,
             
         //}}}1
         },
