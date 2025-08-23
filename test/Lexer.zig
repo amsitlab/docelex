@@ -79,8 +79,8 @@ test "hex number" {
         std.debug.print("{?} == Tag.literal_number : {}\n", .{token.tag, e});
     };
     _ = testing.expectEqual(slice, "0xcafebabe") catch |e| {
-        std.debug.print("slice == 0xcafebabe: {}\nslice: {s}\n", .{
-            e, slice
+        std.debug.print("{s} == 0xcafebabe: {}\nslice: {s}\n", .{
+            slice, e, slice
         });
     };
    
