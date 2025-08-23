@@ -267,7 +267,7 @@ pub fn next(it: *@This()) Token {
             //TODO: E e for exponent
             //TODO: O o for octal
             //TODO: P p for hexa-exponent
-            'a', 'A'
+            'a', 'A',
             'c', 'C',
             'd', 'D',
             'f'...'n', 'F'...'N',
