@@ -1,6 +1,7 @@
 
 
 const Lexer = @import("docelex").Lexer;
+const literal = @import("docelex").literal;
 const std = @import("std");
 const testing = std.testing;
 const Tag = Lexer.Token.Tag;
@@ -108,7 +109,28 @@ test "hex number" {
 
 test "invalid number" {
     var lexer = lex("1e", false);
-    try testing.expectEqual(lexer.next().tag, Tag.illegal);
+    try testing.expectEqual(Tag.literal_number, token.tag);
+    switch(literal.validateNumberLiteral("1e")) {
+        .failure => |e| switch(e) {
+            .upper_case_base,
+            .repeated_underscore,
+            .invalid_float_base,
+            .invalid_underscore_after_special,
+            //.invalid_digit,
+            .invalid_digit_exponent,
+            .duplicate_period,
+            .duplicate_exponent,
+            .exponent_after_underscore,
+            .special_after_underscore,
+            .trailing_special,
+            .trailing_underscore,
+            .invalid_character,
+            .invalid_exponent_sign,
+            .period_after_exponent
+            => |i| std.debug.print("Malformed Number: at {i}", e.)
+        }
+    }
+
     const token = lexer.next();
     std.debug.print("\nToken{{ .tag = {?}, .loc = {{ .beg = {d}, .end = {d} }} lex: {s}\n", .{
         token.tag, token.loc.beg, token.loc.end,

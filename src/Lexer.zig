@@ -61,7 +61,7 @@ const State = enum {
     doc,
     doc_start,
     int,
-    number_hex,
+    // number_hex, // unused
 };
 
 
@@ -252,62 +252,29 @@ pub fn next(it: *@This()) Token {
         .int => switch(it.buf[it.idx]){
         //{{{1
             // TODO: floating-point, integer-exponent
-            '_',
-            '0'...'9' => {
+            '_', '.', '0'...'9', 'a'...'z', 'A'...'Z' => {
+                // NOTE: sparated validator
                 it.idx += 1;
                 continue :state .int;
             },
-            'x', 'X' => if (is_zero_based) {
-                it.idx += 1;
-                continue :state .number_hex;
-            } else {
-                if (it.idx != BUFLEN) continue :state .invalid;
-                token.tag = .illegal;
-                token.loc.end = it.idx;
-                return token;
-            },
-            // TODO: . for floating-point
-            '.',
-            //TODO: B b for binary 
-            'b', 'B',
-            //TODO: E e for exponent
-            'e', 'E',
-            //TODO: O o for octal
-            'o', 'O',
-            //TODO: P p for hexa-exponent
-            'p', 'P',
-            // TODO: invalid
-            'a', 'A',
-            'c', 'C',
-            'd', 'D',
-            'f'...'n', 'F'...'N',
-            'q'...'w', 'Q'...'W',
-            'y', 'Y',
-            'z', 'Z' => {
-                token.loc.end = it.idx;
-                token.tag = .literal_number;
-                return token;
-            },
-
             // anything
             else =>  {},
-            
         //}}}1
         },
-        .number_hex => switch(it.buf[it.idx]){
-            0 => if(it.idx == BUFLEN) {
-                token.tag = .illegal;
-                token.loc.end = it.idx;
-                return token;
-            } else {
-                continue :state .invalid;
-            },
-            'a'...'f', 'A'...'F', '0'...'9', '_' => {
-                it.idx += 1;
-                continue :state .number_hex;
-            },
-            else => {},
-        }
+        //.number_hex => switch(it.buf[it.idx]){
+        //    0 => if(it.idx == BUFLEN) {
+        //        token.tag = .illegal;
+        //        token.loc.end = it.idx;
+        //        return token;
+        //    } else {
+        //        continue :state .invalid;
+        //    },
+        //    'a'...'f', 'A'...'F', '0'...'9', '_' => {
+        //        it.idx += 1;
+        //        continue :state .number_hex;
+        //    },
+        //    else => {},
+        //}
     }
     
     token.loc.end = it.idx;
