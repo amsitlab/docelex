@@ -127,7 +127,7 @@ test "invalid number" {
             .trailing_underscore,
             .invalid_character,
             .invalid_exponent_sign,
-            .period_after_exponent => |*i| {
+            .period_after_exponent => |i| {
                 std.debug.print("Malformed Number: at {d}", .{i});
             },
             else => {},
