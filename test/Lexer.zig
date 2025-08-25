@@ -139,6 +139,7 @@ test "invalid number" {
         token.tag, token.loc.beg, token.loc.end,
         lexer.buf[token.loc.beg..token.loc.end]
     });
+    token = lexer.next();
     try testing.expectEqual(token.tag, Tag.eof);
 }
 
