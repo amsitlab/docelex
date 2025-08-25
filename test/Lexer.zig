@@ -128,10 +128,11 @@ test "invalid number" {
             .invalid_character,
             .invalid_exponent_sign,
             .period_after_exponent => |i| {
-                std.debug.print("Malformed Number: at {i}", .{e});
+                std.debug.print("Malformed Number: at {i}", .{i});
             },
             else => {},
         },
+        else => {},
     }
 
     std.debug.print("\nToken{{ .tag = {?}, .loc = {{ .beg = {d}, .end = {d} }} lex: {s}\n", .{
