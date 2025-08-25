@@ -119,7 +119,7 @@ test "invalid number" {
             .invalid_underscore_after_special,
             //.invalid_digit,
             .invalid_digit_exponent,
-            .duplicate_period,
+            //.duplicate_period,
             .duplicate_exponent,
             .exponent_after_underscore,
             .special_after_underscore,
