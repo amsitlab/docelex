@@ -109,6 +109,7 @@ test "hex number" {
 
 test "invalid number" {
     var lexer = lex("1e", false);
+    const token = lexer.next();
     try testing.expectEqual(Tag.literal_number, token.tag);
     switch(literal.validateNumberLiteral("1e")) {
         .failure => |e| switch(e) {
@@ -133,7 +134,6 @@ test "invalid number" {
         },
     }
 
-    const token = lexer.next();
     std.debug.print("\nToken{{ .tag = {?}, .loc = {{ .beg = {d}, .end = {d} }} lex: {s}\n", .{
         token.tag, token.loc.beg, token.loc.end,
         lexer.buf[token.loc.beg..token.loc.end]
