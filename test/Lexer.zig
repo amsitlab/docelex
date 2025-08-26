@@ -75,25 +75,9 @@ test "basic number" {
     };
 
     var token = lexer.next();
-    std.debug.print("\n-----<basic number>-----\n", .{});
-    _ = testing.expectEqual(Tag.literal_number, token.tag) catch |e| {
-        std.debug.print("{}: Tag.literal_number == {?}\n", .{
-            e, token.tag
-        });
-        std.debug.print("beg: {d}, end: {d}, slice: {s}\n", .{
-            token.loc.beg, token.loc.end,
-            lexer.buf[token.loc.beg..token.loc.end]
-        });
-        return e;
-    };
+    try testing.expectEqual(Tag.literal_number, token.tag);
     token = lexer.next();
-    _ = testing.expectEqual(Tag.eof, token.tag) catch |e| {
-        std.debug.print("{}: Tag.eof == {?}\n", .{
-            e, token.tag
-        });
-        return e;
-    };
-    std.debug.print("\n-----</basic number>-----\n", .{});
+    try testing.expectEqual(Tag.eof, token.tag);
 
 }
 
@@ -101,31 +85,14 @@ test "hex number" {
     var lexer = lex("0xcafebabe\n", false);
     var token = lexer.next();
     const slice: []const u8 = lexer.buf[token.loc.beg..token.loc.end];
-    std.debug.print("\n-----<hex number>-----\n", .{});
-    _ = testing.expectEqual(Tag.literal_number, token.tag) catch |e| {
-        std.debug.print("{}: Tag.literal_number == {?}\n", .{
-            e, token.tag
-        });
-        return e;
-    };
-    _ = testing.expect(std.mem.eql(u8, "0xcafebabe", slice)) catch |e| {
-        std.debug.print("{}: 0xcafebabe == {s}\nslice: {s}\n", .{
-            e, slice, slice
-        });
-        return e;
-    };
+    try testing.expectEqual(Tag.literal_number, token.tag);
+    try testing.expect(std.mem.eql(u8, "0xcafebabe", slice));
    
     token = lexer.next();
-    _ = testing.expectEqual(Tag.eof, token.tag) catch |e| {
-        std.debug.print("{}: Tag.eof == {?}\n", .{
-            e, token.tag
-        });
-        return e;
-    };
-    std.debug.print("\n-----</hex number>-----\n", .{});
+    try testing.expectEqual(Tag.eof, token.tag);
 }
 
-test "invalid number" {
+test "invalid exponet number" {
     var lexer = lex("1e", false);
     var token = lexer.next();
     try testing.expectEqual(Tag.literal_number, token.tag);
@@ -146,7 +113,7 @@ test "invalid number" {
             .invalid_character,
             .invalid_exponent_sign,
             .period_after_exponent => |i| {
-                std.debug.print("Malformed Number: at {d}", .{i});
+                std.debug.print("Malformed Number ({?}): at {d}", .{i});
             },
             else => {},
         },
@@ -158,7 +125,7 @@ test "invalid number" {
         lexer.buf[token.loc.beg..token.loc.end]
     });
     token = lexer.next();
-    try testing.expectEqual(token.tag, Tag.eof);
+    try testing.expectEqual(Tag.eof, token.tag);
 }
 
 
