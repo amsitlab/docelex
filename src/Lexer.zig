@@ -72,7 +72,7 @@ pub fn next(it: *@This()) Token {
         }
     };
     var doc_len: usize = 0;
-    var is_zero_based = false;
+    // var is_zero_based = false;
     const BUFLEN = it.buf.len;
     state: switch(State.start) {
         .start => switch(it.buf[it.idx]){
@@ -102,7 +102,7 @@ pub fn next(it: *@This()) Token {
             },
             '0'...'9' => {
                 token.tag = .literal_number;
-                is_zero_based = it.buf[it.idx] == '0';
+                // is_zero_based = it.buf[it.idx] == '0';
                 it.idx += 1;
                 continue :state .int;
             }
@@ -261,20 +261,6 @@ pub fn next(it: *@This()) Token {
             else =>  {},
         //}}}1
         },
-        //.number_hex => switch(it.buf[it.idx]){
-        //    0 => if(it.idx == BUFLEN) {
-        //        token.tag = .illegal;
-        //        token.loc.end = it.idx;
-        //        return token;
-        //    } else {
-        //        continue :state .invalid;
-        //    },
-        //    'a'...'f', 'A'...'F', '0'...'9', '_' => {
-        //        it.idx += 1;
-        //        continue :state .number_hex;
-        //    },
-        //    else => {},
-        //}
     }
     
     token.loc.end = it.idx;

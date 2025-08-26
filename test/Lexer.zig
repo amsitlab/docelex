@@ -109,7 +109,7 @@ test "hex number" {
 
 test "invalid number" {
     var lexer = lex("1e", false);
-    const token = lexer.next();
+    var token = lexer.next();
     try testing.expectEqual(Tag.literal_number, token.tag);
     switch(literal.validateNumberLiteral("1e")) {
         .failure => |e| switch(e) {
