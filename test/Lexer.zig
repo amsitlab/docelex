@@ -63,9 +63,9 @@ test "line comment, doc comment, container doc comment" {
     };
 
     var token = lexer.next();
-    testing.expectEqual(Tag.doc_container, token.tag);
+    try testing.expectEqual(Tag.doc_container, token.tag);
     token = lexer.next();
-    testing.expectEqual(Tag.doc, token.tag);
+    try testing.expectEqual(Tag.doc, token.tag);
 }
 
 test "basic number" {
