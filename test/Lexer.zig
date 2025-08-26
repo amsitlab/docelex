@@ -50,6 +50,25 @@ test "line comment with close then illegal" {
     try testing.expectEqual(token.loc.end, lexer.buf.len);
 }
 
+test "line comment, doc comment, container doc comment" {
+    const code = 
+        \\ // This will be skipped
+        \\ // Also this */
+        \\ /*! This is container doc comment */
+        \\ /* This is doc comment */
+        ;
+    var lexer: Lexer = .{
+        .buf = code,
+        .with_doc = code,
+    };
+
+    var token: Token = undefined;
+    token = lexer.next();
+    testing.expectEqual(Tag.doc_container, token.tag);
+    token = lexer.next();
+    testing.expectEqual(Tag.doc, token.tag);
+}
+
 test "basic number" {
     var lexer: Lexer = .{
         .with_doc = false,
