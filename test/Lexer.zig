@@ -59,7 +59,7 @@ test "line comment, doc comment, container doc comment" {
         ;
     var lexer: Lexer = .{
         .buf = code,
-        .with_doc = code,
+        .with_doc = true,
     };
 
     var token = lexer.next();
