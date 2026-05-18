@@ -5,6 +5,11 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    const lib = b.addModule(.{
+        .root_source_path = b.path("src/lib.zig"),
+        .tartget = target,
+        .optimize = optimize,
+    });
     const tests =  b.addTest(.{
         .root_module = b.createModule(.{
             .root_source_file = b.path("test/main.zig"),
@@ -13,6 +18,7 @@ pub fn build(b: *std.Build) void {
         }),
     });
 
+    tests.root_module.addImport("doclex", lib);
     const runTest = b.addRunArtifact(tests);
     b.step("test", "Run all unit test")
         .dependOn(&runTest.step);
