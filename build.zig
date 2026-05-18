@@ -6,7 +6,7 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const lib = b.addModule("doclex", .{
-        .root_source_path = b.path("src/lib.zig"),
+        .root_source_file = b.path("src/lib.zig"),
         .tartget = target,
         .optimize = optimize,
     });
