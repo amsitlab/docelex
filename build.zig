@@ -6,9 +6,11 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const tests =  b.addTest(.{
-        .root_source_file = b.path("test/main.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("test/main.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
 
     const runTest = b.addRunArtifact(tests);
