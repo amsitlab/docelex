@@ -7,7 +7,7 @@ pub fn build(b: *std.Build) void {
 
     const lib = b.addModule("doclex", .{
         .root_source_file = b.path("src/lib.zig"),
-        .tartget = target,
+        .target = target,
         .optimize = optimize,
     });
     const tests =  b.addTest(.{
