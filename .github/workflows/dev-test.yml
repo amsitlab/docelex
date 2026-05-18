@@ -17,7 +17,7 @@ jobs:
 
       - name: Set Zig version
         id: zig-version
-        run: echo "version=0.14.1" >> $GITHUB_OUTPUT
+        run: echo "version=0.16.0" >> $GITHUB_OUTPUT
 
       - name: Cache Zig
         id: cache-zig
